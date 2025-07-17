@@ -4,7 +4,7 @@ import { useScroll, useTransform } from "motion/react";
 import React from "react";
 import { GoogleGeminiEffect } from "./ui/google-gemini-effect";
 
-export function AboutPara() {
+export function About() {
   const ref = React.useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,

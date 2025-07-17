@@ -12,8 +12,9 @@ import {
 } from "@/components/ui/resizable-navbar";
 import { useState } from "react";
 import { Hero } from "./hero-section";
-import { AboutPara } from "./about-para";
+import { About } from "./about";
 import { Projects } from "./projects";
+import { Bento } from "./bento";
 
 export function Header() {
   const navItems = [
@@ -90,8 +91,9 @@ export function Header() {
         </MobileNav>
       </Navbar>
       <Hero/>
-      <AboutPara/>
+      <About/>
       <Projects/>
+      <Bento/>
     </div>
   );
 }
