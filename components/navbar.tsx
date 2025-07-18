@@ -15,6 +15,7 @@ import { Hero } from "./hero-section";
 import { About } from "./about";
 import { Projects } from "./projects";
 import { Bento } from "./bento";
+import { TechStack } from "./tech-stack";
 
 export function Header() {
   const navItems = [
@@ -94,6 +95,7 @@ export function Header() {
       <About/>
       <Projects/>
       <Bento/>
+      <TechStack/>
     </div>
   );
 }
