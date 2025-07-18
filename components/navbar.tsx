@@ -16,6 +16,8 @@ import { About } from "./about";
 import { Projects } from "./projects";
 import { Bento } from "./bento";
 import { TechStack } from "./tech-stack";
+import { Testimonial } from "./testimonial";
+import { Map } from "./map";
 
 export function Header() {
   const navItems = [
@@ -91,11 +93,14 @@ export function Header() {
           </MobileNavMenu>
         </MobileNav>
       </Navbar>
+      
       <Hero/>
       <About/>
       <Projects/>
       <Bento/>
       <TechStack/>
+      <Testimonial/>
+      <Map/>
     </div>
   );
 }
