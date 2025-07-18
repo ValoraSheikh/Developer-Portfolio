@@ -1,9 +1,16 @@
 import { IconCloud } from "@/components/magicui/icon-cloud";
 import { AchievementList } from "./achievement-list";
+import { AnimatedBadges } from "./ui/badges";
 
 const slugs = [
+  "googlechrome",
+  "mongodb",
+  "mongoose",
+  "supabase",
+  "appwrite",
   "typescript",
-  "samsungpay",
+  "tailwindcss",
+  "notion",
   "javascript",
   "dart",
   "java",
@@ -41,17 +48,18 @@ export function TechStack() {
   );
 
   return (
-<div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center bg-black min-h-[80vh]">
-  <div className="relative flex items-center justify-center overflow-hidden p-1">
-    <IconCloud images={images} />
-  </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center pt-5 bg-black min-h-[80vh]">
+      <div className="relative flex flex-col items-center justify-center overflow-hidden pl-6">
+        <p className="text-4xl pb-20 text-left w-full bg-clip-text text-transparent bg-gradient-to-b from-neutral-100 to-neutral-300 font-sans ">
+          Tech Stack
+        </p>
+        <AnimatedBadges/>
+        <IconCloud images={images} />
+      </div>
 
-  <div className="p-10">
-    <AchievementList />
-  </div>
-</div>
-
+      <div className="lg:p-10">
+        <AchievementList />
+      </div>
+    </div>
   );
 }
-
-
