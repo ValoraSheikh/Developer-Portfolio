@@ -17,9 +17,10 @@ export const BackgroundLines = ({
   return (
     <div
       className={cn(
-        "h-[20rem] md:h-screen w-full bg-white dark:bg-black",
+        "relative h-[20rem] md:h-screen w-full bg-white dark:bg-black",
         className
       )}
+      style={{ overflow: "hidden" }} // ensure nothing bleeds
     >
       <SVG svgOptions={svgOptions} />
       {children}
