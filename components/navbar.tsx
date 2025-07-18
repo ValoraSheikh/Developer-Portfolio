@@ -18,20 +18,21 @@ import { Bento } from "./bento";
 import { TechStack } from "./tech-stack";
 import { Testimonial } from "./testimonial";
 import { Map } from "./map";
+import Link from "next/link";
 
 export function Header() {
   const navItems = [
-    {
-      name: "Features",
-      link: "#features",
-    },
+    // {
+    //   name: "Features",
+    //   link: "#features",
+    // },
     {
       name: "Blogs",
-      link: "#pricing",
+      link: "/blogs",
     },
     {
       name: "Contact",
-      link: "#contact",
+      link: "/contact-us",
     },
   ];
 
@@ -65,14 +66,14 @@ export function Header() {
             onClose={() => setIsMobileMenuOpen(false)}
           >
             {navItems.map((item, idx) => (
-              <a
+              <Link
                 key={`mobile-link-${idx}`}
                 href={item.link}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="relative text-neutral-600 dark:text-neutral-300"
               >
                 <span className="block">{item.name}</span>
-              </a>
+              </Link>
             ))}
             <div className="flex w-full flex-col gap-4">
               <NavbarButton
