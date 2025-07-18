@@ -3,6 +3,8 @@ import { AchievementList } from "./achievement-list";
 import { AnimatedBadges } from "./ui/badges";
 
 const slugs = [
+  "auth0",
+  "googlecalendar",
   "googlechrome",
   "mongodb",
   "mongoose",
