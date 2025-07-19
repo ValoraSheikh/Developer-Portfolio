@@ -13,26 +13,29 @@ export async function generateStaticParams() {
 }
 
 export default function BlogPostPage({ params }: Props) {
-  // Fetch content and metadata
   const { content, data } = getBlogBySlug(params.slug)
-  
-  // Initialize custom MDX components
   const mdxComponents = useMDXComponents({})
 
   return (
-    <div className="max-w-3xl mx-auto py-8 px-20">
-      <h1 className="text-3xl font-bold mb-2">{data.title}</h1>
-      <p className="text-sm text-gray-500 mb-6">{data.date}</p>
-      <Image
-        src={data.image}
-        alt={data.title}
-        width={800}
-        height={450}
-        className="w-full h-auto rounded-lg mb-8"
-      />
+    <div className="bg-background text-foreground">
+      <div className="max-w-5xl mx-auto px-4 sm:px-8 lg:px-20 py-6 sm:py-10">
+        <h1 className="text-2xl sm:text-4xl font-bold mb-2 leading-tight">
+          {data.title}
+        </h1>
 
-      <div className="px-6 md:px-20">
-        <article className="prose prose-lg dark:prose-invert max-w-none">
+        <p className="text-xs sm:text-sm text-muted-foreground mb-6">
+          {data.date}
+        </p>
+
+        <Image
+          src={data.image}
+          alt={data.title}
+          width={800}
+          height={450}
+          className="w-full h-auto rounded-lg mb-8 object-cover"
+        />
+
+        <article className="prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg max-w-none">
           <MDXRemote source={content} components={mdxComponents} />
         </article>
       </div>
