@@ -6,7 +6,7 @@ author: "Aman Sheikh"
 tags: ["React", "Tailwind CSS", "Components", "Next.js"]
 ---
 
-## 🧱 Component-Driven Thinking
+## 🧱 **Component-Driven Thinking**
 
 Before you touch a line of code, ask yourself:  
 What’s the purpose of this component?
@@ -14,20 +14,33 @@ What’s the purpose of this component?
 > 🧠 *“If it’s not reusable, is it even worth building?”* — You, hopefully
 
 Let’s say you want to build a `Card` component for a testimonials section.
-
+# Welcome to my MDX page!
+## This is a heading
+ 
+<h2>This is a heading</h2>
+ 
+<p>This is a list in markdown:</p>
+ 
+<ul>
+  <li>One</li>
+  <li>Two</li>
+  <li>Three</li>
+</ul>
+Checkout my React component:
 ---
 
 ## 🧪 Final Output
 
 Looks something like this:
 
-![Card UI](/images/blog/card-preview.png)
+![Card UI](https://images.unsplash.com/photo-1484788984921-03950022c9ef?q=80&w=1232&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
 
 ---
 
 ## 🚀 The Code (Taken from Aceternity)
 
 Here’s how you can build it step by step:
+
 
 ```tsx
 import { cn } from "@/lib/utils"
@@ -49,3 +62,4 @@ export function Card({ className, children }: CardProps) {
     </div>
   )
 }
+```

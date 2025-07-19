@@ -60,7 +60,7 @@ const blogs: BlogType[] = await Promise.all(
           <Link
           key={blog.slug}
           href={`/blogs/${blog.slug}`}
-          className="group flex flex-col h-full border border-gray-200 hover:border-transparent hover:shadow-lg transition duration-300 rounded-xl p-5 dark:border-neutral-700 relative overflow-hidden"
+          className="group flex flex-col h-full hover:shadow-lg transition duration-300 rounded-xl p-5 dark:border-neutral-700 relative overflow-hidden"
           >
           <ShineBorder shineColor={"white"} key={blog.slug} />
             <div className="aspect-w-16 aspect-h-11">
