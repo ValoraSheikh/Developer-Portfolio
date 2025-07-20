@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { Github, Linkedin, Mail, Phone, MessageCircle, Twitter } from "lucide-react"
 
 const services = [
   "WEB DEVELOPMENT",
@@ -26,6 +27,7 @@ export default function ContactForm() {
     firstName: "",
     lastName: "",
     email: "",
+    phoneNumber: "",
     message: "",
   })
 
@@ -48,10 +50,10 @@ export default function ContactForm() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black font-sans">
       <div className="container mx-auto px-4 py-8 lg:py-16">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
-          {/* Form Section */}
+          {/* Form Section (Left Side) */}
           <div className="space-y-8">
             {/* Header */}
             <div className="text-center lg:text-left space-y-4">
@@ -150,6 +152,21 @@ export default function ContactForm() {
                 />
               </div>
 
+              {/* Phone Number Field */}
+              <div className="space-y-2">
+                <Label htmlFor="phoneNumber" className="text-base font-medium text-zinc-200">
+                  Phone Number
+                </Label>
+                <Input
+                  id="phoneNumber"
+                  type="tel"
+                  placeholder="e.g., +1 555 123 4567"
+                  value={formData.phoneNumber}
+                  onChange={(e) => handleInputChange("phoneNumber", e.target.value)}
+                  className="h-12 bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-400 focus:border-white focus:ring-white"
+                />
+              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="message" className="text-base font-medium text-zinc-200">
                   Your Message
@@ -172,16 +189,84 @@ export default function ContactForm() {
             </form>
           </div>
 
-          {/* Decorative Section */}
-          <div className="hidden lg:block">
-            <div className="relative h-[600px] bg-black rounded-2xl overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-zinc-950 to-black">
-                <div className="absolute top-20 left-20 w-32 h-32 border border-zinc-800 rounded-full opacity-20"></div>
-                <div className="absolute bottom-32 right-16 w-24 h-24 border border-zinc-700 rotate-45 opacity-30"></div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 border border-zinc-700 rounded-full opacity-10"></div>
-                <div className="absolute top-40 right-32 w-16 h-16 bg-zinc-800 rounded-full opacity-40"></div>
-                <div className="absolute bottom-20 left-32 w-20 h-20 border-2 border-zinc-700 opacity-25"></div>
-              </div>
+          {/* New Contact Info Section (Right Side) */}
+          <div className="w-full bg-black rounded-xl shadow-lg p-4 sm:p-6 md:p-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-white text-center mb-6">Get in Touch</h2>
+            <div className="w-24 h-1 bg-zinc-800 mx-auto mb-8 rounded-full" /> {/* Optional divider */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* Phone Card */}
+              <a
+                href="tel:+1234567890"
+                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-102 hover:shadow-lg group"
+                aria-label="Call us at +1 (234) 567-890"
+              >
+                <Phone className="w-8 h-8 text-white mb-2 transition-transform duration-200 ease-in-out group-hover:rotate-6" />
+                <span className="text-white text-base md:text-lg font-semibold">Phone</span>
+                <span className="text-zinc-400 text-sm">+1 (234) 567-890</span>
+              </a>
+
+              {/* Email Card */}
+              <a
+                href="mailto:your.email@example.com"
+                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-102 hover:shadow-lg group"
+                aria-label="Email us at your.email@example.com"
+              >
+                <Mail className="w-8 h-8 text-white mb-2 transition-transform duration-200 ease-in-out group-hover:scale-110" />
+                <span className="text-white text-base md:text-lg font-semibold">Email</span>
+                <span className="text-zinc-400 text-sm">your.email@example.com</span>
+              </a>
+
+              {/* GitHub Card */}
+              <a
+                href="https://github.com/yourusername"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-102 hover:shadow-lg group"
+                aria-label="Visit my GitHub profile"
+              >
+                <Github className="w-8 h-8 text-white mb-2 transition-transform duration-200 ease-in-out group-hover:-translate-y-0.5" />
+                <span className="text-white text-base md:text-lg font-semibold">GitHub</span>
+                <span className="text-zinc-400 text-sm">yourusername</span>
+              </a>
+
+              {/* LinkedIn Card */}
+              <a
+                href="https://linkedin.com/in/yourprofile"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-102 hover:shadow-lg group"
+                aria-label="Connect with me on LinkedIn"
+              >
+                <Linkedin className="w-8 h-8 text-[#0A66C2] mb-2 transition-transform duration-200 ease-in-out group-hover:-translate-y-0.5" />
+                <span className="text-white text-base md:text-lg font-semibold">LinkedIn</span>
+                <span className="text-zinc-400 text-sm">yourprofile</span>
+              </a>
+
+              {/* WhatsApp Card */}
+              <a
+                href="https://wa.me/9461004417" // Replace with actual WhatsApp number
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-102 hover:shadow-lg group"
+                aria-label="Chat with me on WhatsApp"
+              >
+                <MessageCircle className="w-8 h-8 text-[#25D366] mb-2 transition-transform duration-200 ease-in-out group-hover:-translate-y-0.5" />
+                <span className="text-white text-base md:text-lg font-semibold">WhatsApp</span>
+                <span className="text-zinc-400 text-sm">+1 (234) 567-890</span>
+              </a>
+
+              {/* X Card */}
+              <a
+                href="https://wa.me/9461004417" // Replace with actual WhatsApp number
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-102 hover:shadow-lg group"
+                aria-label="Chat with me on WhatsApp"
+              >
+                <Twitter className="w-8 h-8 text-[#0b62e6] mb-2 transition-transform duration-200 ease-in-out group-hover:-translate-y-0.5" />
+                <span className="text-white text-base md:text-lg font-semibold">X</span>
+                <span className="text-zinc-400 text-sm">username</span>
+              </a>
             </div>
           </div>
         </div>
