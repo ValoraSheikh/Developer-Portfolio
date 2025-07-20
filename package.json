@@ -28,6 +28,7 @@
     "dotted-map": "^2.2.3",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.525.0",
+    "mongoose": "^8.16.4",
     "motion": "^12.23.6",
     "next": "15.4.1",
     "next-mdx-remote": "^5.0.0",
