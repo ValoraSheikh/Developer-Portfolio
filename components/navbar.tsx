@@ -19,8 +19,11 @@ import { TechStack } from "./tech-stack";
 import { Testimonial } from "./testimonial";
 import { Map } from "./map";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export function Header() {
+  const redirect = useRouter();
+
   const navItems = [
     // {
     //   name: "Features",
@@ -47,7 +50,14 @@ export function Header() {
           <NavItems items={navItems} />
           <div className="flex items-center gap-4">
             {/* <NavbarButton variant="secondary">Login</NavbarButton> */}
-            <NavbarButton variant="primary">Book a call</NavbarButton>
+            <NavbarButton
+              variant="primary"
+              onClick={() => {
+                redirect.push(`/contact-us`);
+              }}
+            >
+              Book a call
+            </NavbarButton>
           </div>
         </NavBody>
 
@@ -76,11 +86,13 @@ export function Header() {
               </Link>
             ))}
             <div className="flex w-full flex-col gap-4">
-              
               <NavbarButton
-                onClick={() => setIsMobileMenuOpen(false)}
                 variant="primary"
                 className="w-full"
+                onClick={() => {
+                  redirect.push(`/contact-us`)
+                  setIsMobileMenuOpen(false)
+                }}
               >
                 Book a call
               </NavbarButton>
@@ -88,15 +100,14 @@ export function Header() {
           </MobileNavMenu>
         </MobileNav>
       </Navbar>
-      
-      <Hero/>
-      <About/>
-      <Projects/>
-      <Bento/>
-      <TechStack/>
-      <Testimonial/>
-      <Map/>
+
+      <Hero />
+      <About />
+      <Projects />
+      <Bento />
+      <TechStack />
+      <Testimonial />
+      <Map />
     </div>
   );
 }
-
