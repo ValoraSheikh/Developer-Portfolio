@@ -1,44 +1,77 @@
-// app/blogs/[slug]/page.tsx
-import { getBlogBySlug, getAllBlogs } from '@/lib/loadBlog'
-import { useMDXComponents } from '@/mdx-components'
-import { MDXRemote } from 'next-mdx-remote/rsc'
-import Image from 'next/image'
+import ClientBlogPost from "@/components/Blog/BlogPost";
+import { serialize } from "next-mdx-remote/serialize";
+import { getBlogBySlug } from "@/lib/loadBlog";
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const { data } = await getBlogBySlug(slug);
+
+  return {
+    title: `${data.title} | Aman Sheikh – Full Stack Developer`,
+    description:
+      data.description ||
+      "Read this blog by Aman Sheikh on modern web development.",
+    keywords: data.tags || [
+      "Web Development",
+      "Next.js",
+      "Full Stack",
+      "TailwindCSS",
+      "MongoDB",
+    ],
+    authors: [{ name: "Aman Sheikh", url: "https://yourdomain.com" }],
+    openGraph: {
+      title: data.title,
+      description: data.description,
+      type: "article",
+      url: `https://yourdomain.com/blogs/${slug}`,
+      siteName: "Aman Sheikh Portfolio",
+      publishedTime: data.date,
+      images: [
+        {
+          url: data.image || "https://yourdomain.com/default-og-image.png",
+          width: 1200,
+          height: 630,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: data.title,
+      description: data.description,
+      images: [data.image || "https://yourdomain.com/default-og-image.png"],
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    icons: {
+      icon: "/favicon.ico",
+      shortcut: "/favicon-32x32.png",
+      apple: "/apple-touch-icon.png",
+    },
+    alternates: {
+      canonical: `https://yourdomain.com/blogs/${slug}`,
+    },
+  };
+}
 
 type Props = {
-  params: { slug: string }
+  params: { slug: string };
+};
+
+interface BlogPostData {
+  content: string;
+  data: {
+    title: string;
+    date: string;
+    image: string;
+  };
 }
 
-export async function generateStaticParams() {
-  return getAllBlogs().map(blog => ({ slug: blog.slug }))
-}
-
-export default function BlogPostPage({ params }: Props) {
-  const { content, data } = getBlogBySlug(params.slug)
-  const mdxComponents = useMDXComponents({})
-
-  return (
-    <div className="bg-background text-foreground">
-      <div className="max-w-5xl mx-auto px-4 sm:px-8 lg:px-20 py-6 sm:py-10">
-        <h1 className="text-2xl sm:text-4xl font-bold mb-2 leading-tight">
-          {data.title}
-        </h1>
-
-        <p className="text-xs sm:text-sm text-muted-foreground mb-6">
-          {data.date}
-        </p>
-
-        <Image
-          src={data.image}
-          alt={data.title}
-          width={800}
-          height={450}
-          className="w-full h-auto rounded-lg mb-8 object-cover"
-        />
-
-        <article className="prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg max-w-none">
-          <MDXRemote source={content} components={mdxComponents} />
-        </article>
-      </div>
-    </div>
-  )
+export default async function BlogPostPage({ params }: Props) {
+  const { slug } = await params
+  const { content, data } = (await getBlogBySlug(slug)) as BlogPostData
+  const serializedContent = await serialize(content);
+  return <ClientBlogPost content={serializedContent} data={data} />;
 }

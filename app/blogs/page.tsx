@@ -5,6 +5,73 @@ import matter from "gray-matter";
 import Link from "next/link";
 import { ShineBorder } from "@/components/magicui/shine-border";
 
+export const metadata = {
+  title: "Tech Blogs & Case Studies – Aman Sheikh",
+  description:
+    "Read my latest blogs on full stack development, web performance, design systems, and real-world case studies. Built with Next.js & MongoDB.",
+  keywords: [
+    "Aman Sheikh blogs",
+    "Full stack blog",
+    "Next.js blog",
+    "MongoDB blog",
+    "Tailwind blog",
+    "Web dev case studies",
+    "JavaScript blog",
+    "Frontend development",
+    "Backend tutorials",
+  ],
+  authors: [{ name: "Aman Sheikh", url: "https://yourdomain.com" }],
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      maxVideoPreview: -1,
+      maxImagePreview: "large",
+      maxSnippet: -1,
+    },
+  },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-32x32.png",
+    apple: "/apple-touch-icon.png",
+  },
+  alternates: {
+    canonical: "https://yourdomain.com/blogs",
+    languages: {
+      "en-US": "https://yourdomain.com/en/blogs",
+    },
+  },
+  openGraph: {
+    title: "Tech Blogs & Case Studies – Aman Sheikh",
+    description:
+      "Explore web dev blogs and case studies. I write about building real projects using Next.js, MongoDB, Tailwind, and more.",
+    url: "https://yourdomain.com/blogs",
+    siteName: "Aman Sheikh Portfolio",
+    images: [
+      {
+        url: "https://res.cloudinary.com/dxlh1tom2/image/upload/v1753087717/ChatGPT_Image_Jul_21_2025_02_13_11_PM_bisszv.png",
+        width: 1200,
+        height: 630,
+        alt: "Aman Sheikh Blogs Page OG Image",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tech Blogs & Case Studies – Aman Sheikh",
+    description:
+      "Technical blogs and real-life dev learnings from a full-stack developer. Built using Next.js and TailwindCSS.",
+    images: [
+      "https://res.cloudinary.com/dxlh1tom2/image/upload/v1753087717/ChatGPT_Image_Jul_21_2025_02_13_11_PM_bisszv.png",
+    ],
+  },
+};
+
 type BlogType = {
   slug: string;
   title: string;
@@ -13,34 +80,29 @@ type BlogType = {
   author: string;
 };
 
-
-
 export default async function BlogsPage() {
   const files = await fs.readdir(path.join(process.cwd(), "content/blogs"));
 
-const blogs: BlogType[] = await Promise.all(
-  files.map(async (fileName) => {
-    const slug = fileName.replace(/\.mdx$/, "");
-    const fileContent = await fs.readFile(
-      path.join(process.cwd(), "content/blogs", fileName),
-      "utf8"
-    );
-    const { data } = matter(fileContent);
+  const blogs: BlogType[] = await Promise.all(
+    files.map(async (fileName) => {
+      const slug = fileName.replace(/\.mdx$/, "");
+      const fileContent = await fs.readFile(
+        path.join(process.cwd(), "content/blogs", fileName),
+        "utf8"
+      );
+      const { data } = matter(fileContent);
 
-    return {
-      slug,
-      title: data.title,
-      description: data.description,
-      image: data.image,
-      author: data.author,
-    } as BlogType;
-  })
-);
+      return {
+        slug,
+        title: data.title,
+        description: data.description,
+        image: data.image,
+        author: data.author,
+      } as BlogType;
+    })
+  );
 
-
-
-  console.log('here are the blogs', blogs);
-  
+  // console.log("here are the blogs", blogs);
 
   return (
     <div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto min-h-screen">
@@ -58,11 +120,11 @@ const blogs: BlogType[] = await Promise.all(
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {blogs.map((blog) => (
           <Link
-          key={blog.slug}
-          href={`/blogs/${blog.slug}`}
-          className="group flex flex-col h-full hover:shadow-lg transition duration-300 rounded-xl p-5 dark:border-neutral-700 relative overflow-hidden"
+            key={blog.slug}
+            href={`/blogs/${blog.slug}`}
+            className="group flex flex-col h-full hover:shadow-lg transition duration-300 rounded-xl p-5 dark:border-neutral-700 relative overflow-hidden"
           >
-          <ShineBorder shineColor={"white"} key={blog.slug} />
+            <ShineBorder shineColor={"white"} key={blog.slug} />
             <div className="aspect-w-16 aspect-h-11">
               <Image
                 width={600}
