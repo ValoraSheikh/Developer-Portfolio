@@ -2,7 +2,8 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Github, Linkedin, Mail, Phone, MessageCircle, Mails, Headset, Smartphone, PhoneCall } from "lucide-react"
+import { IoCall } from "react-icons/io5";
+import { Mails,  } from "lucide-react"
 import { toast } from "sonner"
 import { FaXTwitter } from "react-icons/fa6";
 
@@ -11,7 +12,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { IconBrandTwitterFilled, IconBrandWhatsapp } from "@tabler/icons-react"
+import { IconBrandWhatsapp } from "@tabler/icons-react"
 import { GitHubLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons"
 
 const services = [
@@ -299,7 +300,7 @@ export default function ContactForm() {
                 className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-101 hover:shadow-lg group"
                 aria-label="Call us at +1 (234) 567-890"
               >
-                <PhoneCall   className="w-8 h-8 text-white mb-2 transition-transform duration-200 ease-in-out group-hover:rotate-6" />
+                <IoCall   className="w-8 h-8 text-white mb-2 transition-transform duration-200 ease-in-out group-hover:rotate-6" />
                 <span className="text-white text-base md:text-lg font-semibold">Phone</span>
                 <span className="text-zinc-400 text-sm">+91 9784413782</span>
               </a>
