@@ -10,7 +10,8 @@ const transition = {
   ease: [0, 0, 1, 1] as Easing,
 }
 
-const words = `Oxygen gets you high. In a catastrophic emergency, we're taking giant, panicked breaths. Suddenly you become euphoric, docile. You accept your fate. It's all right here. Emergency water landing, six hundred miles an hour. Blank faces, calm as Hindu cows
+const words = `I am Aman, Barmer-based full-stack dev for non-tech founders who need real results. I build booking systems, e-commerce apps, dashboards — all clean, fast, and fully functional. No bloated teams, no delays — just deep work, pixel-perfect UI, and backend logic that slaps. You ask, I execute. Discipline does the rest.
+
 `;
 
 export const GoogleGeminiEffect = ({
@@ -25,11 +26,11 @@ export const GoogleGeminiEffect = ({
 }) => {
   return (
     <div className={cn("sticky top-40", className)}>
-      <p className="text-4xl pb-20 text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-100 to-neutral-300 font-extrabold">
-        {title || `ABOUT ME`}
+      <p className="text-4xl pb-20 text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-100 to-neutral-300 font-bold font-sans">
+        {title || `About Me`}
       </p>
 
-      <div className="min-h-screen text-center px-1.5 lg:px-16">
+      <div className="min-h-screen text-center px-1.5 lg:px-16 font-sans text-sm">
         <TextGenerateEffect className="space-y-12" words={words} />
       </div>
 

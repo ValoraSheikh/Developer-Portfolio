@@ -1,4 +1,3 @@
-// components/ClientBlogPost.tsx
 'use client'
 import { useMDXComponents } from '@/mdx-components'
 import Image from 'next/image'
