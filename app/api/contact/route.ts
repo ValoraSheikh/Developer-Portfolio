@@ -1,8 +1,11 @@
+import dbConnect from "@/lib/db";
 import { Contact } from "@/models/Contact.model";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
+
+    await dbConnect()
     const body = await req.json();
 
     const { firstName, lastName, email, phoneNo, message, services, expense } =

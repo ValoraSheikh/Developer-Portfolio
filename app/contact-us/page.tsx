@@ -1,13 +1,14 @@
 "use client"
-
-import type React from "react"
-
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Github, Linkedin, Mail, Phone, MessageCircle, Twitter } from "lucide-react"
+import { Github, Linkedin, Mail, Phone, MessageCircle } from "lucide-react"
+
+// React Hook Form and Zod imports
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 
 const services = [
   "WEB DEVELOPMENT",
@@ -20,33 +21,39 @@ const services = [
 
 const budgetOptions = ["LESS THAN $1,000", "$1,000 - $5,000", "MORE THAN $5,000", "LET'S TALK"]
 
+const formSchema = z.object({
+  firstName: z.string().min(1, { message: "First Name is required." }),
+  lastName: z.string().min(1, { message: "Last Name is required." }),
+  email: z.string().email({ message: "Invalid email address." }),
+  phoneNumber: z.string().min(10, { message: "Phone Number is required and must be at least 10 digits." }),
+  message: z.string().min(10, { message: "Message must be at least 10 characters." }),
+  selectedServices: z.array(z.string()).min(1, { message: "Please select at least one service." }),
+  selectedBudget: z.string().min(1, { message: "Please select an estimated expense." }),
+})
+
 export default function ContactForm() {
-  const [selectedServices, setSelectedServices] = useState<string[]>([])
-  const [selectedBudget, setSelectedBudget] = useState<string>("")
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    message: "",
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      message: "",
+      selectedServices: [],
+      selectedBudget: "",
+    },
   })
 
-  const toggleService = (service: string) => {
-    setSelectedServices((prev) => (prev.includes(service) ? prev.filter((s) => s !== service) : [...prev, service]))
-  }
+  // Watch for changes in selectedServices and selectedBudget to update button states
+  const watchedServices = form.watch("selectedServices")
+  const watchedBudget = form.watch("selectedBudget")
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log({
-      services: selectedServices,
-      budget: selectedBudget,
-      ...formData,
-    })
-    // Handle form submission here
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    console.log("Form submitted with values:", values)
+    // Here you would typically send the data to your backend
+    alert("Form submitted successfully! Check console for data.")
   }
 
   return (
@@ -65,131 +72,197 @@ export default function ContactForm() {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-8">
-              {/* Service Selection */}
-              <div className="space-y-4">
-                <Label className="text-base font-medium text-zinc-200">Select Service</Label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {services.map((service) => (
-                    <Button
-                      key={service}
-                      type="button"
-                      variant={selectedServices.includes(service) ? "default" : "outline"}
-                      className={`h-auto py-3 px-4 text-xs font-medium whitespace-normal text-center ${
-                        selectedServices.includes(service)
-                          ? "bg-white text-black hover:bg-zinc-100"
-                          : "bg-zinc-900 text-zinc-300 border-zinc-700 hover:bg-zinc-800 hover:text-white"
-                      }`}
-                      onClick={() => toggleService(service)}
-                    >
-                      {service}
-                    </Button>
-                  ))}
-                </div>
-              </div>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                {/* Service Selection */}
+                <FormField
+                  control={form.control}
+                  name="selectedServices"
+                  render={({ field }) => (
+                    <FormItem className="space-y-4">
+                      <FormLabel className="text-base font-medium text-zinc-200">Select Service</FormLabel>
+                      <FormControl>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                          {services.map((service) => (
+                            <Button
+                              key={service}
+                              type="button"
+                              variant={watchedServices.includes(service) ? "default" : "outline"}
+                              className={`h-auto py-3 px-4 text-xs font-medium whitespace-normal text-center ${
+                                watchedServices.includes(service)
+                                  ? "bg-white text-black hover:bg-zinc-100"
+                                  : "bg-zinc-900 text-zinc-300 border-zinc-700 hover:bg-zinc-800 hover:text-white"
+                              }`}
+                              onClick={() => {
+                                const newServices = watchedServices.includes(service)
+                                  ? watchedServices.filter((s) => s !== service)
+                                  : [...watchedServices, service]
+                                field.onChange(newServices)
+                              }}
+                            >
+                              {service}
+                            </Button>
+                          ))}
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              {/* Budget Selection */}
-              <div className="space-y-4">
-                <Label className="text-base font-medium text-zinc-200">Estimated Expenses</Label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                  {budgetOptions.map((budget) => (
-                    <Button
-                      key={budget}
-                      type="button"
-                      variant={selectedBudget === budget ? "default" : "outline"}
-                      className={`h-auto py-3 px-4 text-xs font-medium ${
-                        selectedBudget === budget
-                          ? "bg-white text-black hover:bg-zinc-100"
-                          : "bg-zinc-900 text-zinc-300 border-zinc-700 hover:bg-zinc-800 hover:text-white"
-                      }`}
-                      onClick={() => setSelectedBudget(budget)}
-                    >
-                      {budget}
-                    </Button>
-                  ))}
-                </div>
-              </div>
+                {/* Budget Selection */}
+                <FormField
+                  control={form.control}
+                  name="selectedBudget"
+                  render={({ field }) => (
+                    <FormItem className="space-y-4">
+                      <FormLabel className="text-base font-medium text-zinc-200">Estimated Expenses</FormLabel>
+                      <FormControl>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                          {budgetOptions.map((budget) => (
+                            <Button
+                              key={budget}
+                              type="button"
+                              variant={watchedBudget === budget ? "default" : "outline"}
+                              className={`h-auto py-3 px-4 text-xs font-medium ${
+                                watchedBudget === budget
+                                  ? "bg-white text-black hover:bg-zinc-100"
+                                  : "bg-zinc-900 text-zinc-300 border-zinc-700 hover:bg-zinc-800 hover:text-white"
+                              }`}
+                              onClick={() => field.onChange(budget)}
+                            >
+                              {budget}
+                            </Button>
+                          ))}
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              {/* Contact Fields */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="firstName" className="text-base font-medium text-zinc-200">
-                    First Name
-                  </Label>
-                  <Input
-                    id="firstName"
-                    placeholder="First Name"
-                    value={formData.firstName}
-                    onChange={(e) => handleInputChange("firstName", e.target.value)}
-                    className="h-12 bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-400 focus:border-white focus:ring-white"
+                {/* Contact Fields */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="firstName"
+                    render={({ field }) => (
+                      <FormItem className="space-y-2">
+                        <FormLabel htmlFor="firstName" className="text-base font-medium text-zinc-200">
+                          First Name
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            id="firstName"
+                            placeholder="First Name"
+                            className="h-12 bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-400 focus:border-white focus:ring-white"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="lastName"
+                    render={({ field }) => (
+                      <FormItem className="space-y-2">
+                        <FormLabel htmlFor="lastName" className="text-base font-medium text-zinc-200">
+                          Last Name
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            id="lastName"
+                            placeholder="Last Name"
+                            className="h-12 bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-400 focus:border-white focus:ring-white"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="lastName" className="text-base font-medium text-zinc-200">
-                    Last Name
-                  </Label>
-                  <Input
-                    id="lastName"
-                    placeholder="Last Name"
-                    value={formData.lastName}
-                    onChange={(e) => handleInputChange("lastName", e.target.value)}
-                    className="h-12 bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-400 focus:border-white focus:ring-white"
-                  />
-                </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-base font-medium text-zinc-200">
-                  Your Email
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="name@email.com"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
-                  className="h-12 bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-400 focus:border-white focus:ring-white"
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem className="space-y-2">
+                      <FormLabel htmlFor="email" className="text-base font-medium text-zinc-200">
+                        Your Email
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder="name@email.com"
+                          className="h-12 bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-400 focus:border-white focus:ring-white"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
 
-              {/* Phone Number Field */}
-              <div className="space-y-2">
-                <Label htmlFor="phoneNumber" className="text-base font-medium text-zinc-200">
-                  Phone Number
-                </Label>
-                <Input
-                  id="phoneNumber"
-                  type="tel"
-                  placeholder="e.g., +1 555 123 4567"
-                  value={formData.phoneNumber}
-                  onChange={(e) => handleInputChange("phoneNumber", e.target.value)}
-                  className="h-12 bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-400 focus:border-white focus:ring-white"
+                {/* Phone Number Field */}
+                <FormField
+                  control={form.control}
+                  name="phoneNumber"
+                  render={({ field }) => (
+                    <FormItem className="space-y-2">
+                      <FormLabel htmlFor="phoneNumber" className="text-base font-medium text-zinc-200">
+                        Phone Number
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          id="phoneNumber"
+                          type="tel"
+                          placeholder="e.g., +1 555 123 4567"
+                          className="h-12 bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-400 focus:border-white focus:ring-white"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="message" className="text-base font-medium text-zinc-200">
-                  Your Message
-                </Label>
-                <Textarea
-                  id="message"
-                  placeholder="Message"
-                  value={formData.message}
-                  onChange={(e) => handleInputChange("message", e.target.value)}
-                  className="min-h-[120px] bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-400 focus:border-white focus:ring-white resize-none"
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem className="space-y-2">
+                      <FormLabel htmlFor="message" className="text-base font-medium text-zinc-200">
+                        Your Message
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          id="message"
+                          placeholder="Message"
+                          className="min-h-[120px] bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-400 focus:border-white focus:ring-white resize-none"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
 
-              <Button
-                type="submit"
-                className="bg-white hover:bg-zinc-100 text-black px-8 py-3 text-sm font-medium uppercase tracking-wide"
-              >
-                SEND REQUEST
-              </Button>
-            </form>
+                <Button
+                  type="submit"
+                  className="bg-white hover:bg-zinc-100 text-black px-8 py-3 text-sm font-medium uppercase tracking-wide"
+                  disabled={form.formState.isSubmitting}
+                >
+                  {form.formState.isSubmitting ? "SENDING..." : "SEND REQUEST"}
+                </Button>
+              </form>
+            </Form>
           </div>
 
-          {/* New Contact Info Section (Right Side) */}
+          {/* Contact Info Section (Right Side) - Remains unchanged */}
           <div className="w-full bg-black rounded-xl shadow-lg p-4 sm:p-6 md:p-8">
             <h2 className="text-2xl md:text-3xl font-bold text-white text-center mb-6">Get in Touch</h2>
             <div className="w-24 h-1 bg-zinc-800 mx-auto mb-8 rounded-full" /> {/* Optional divider */}
@@ -197,7 +270,7 @@ export default function ContactForm() {
               {/* Phone Card */}
               <a
                 href="tel:+1234567890"
-                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-102 hover:shadow-lg group"
+                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg group"
                 aria-label="Call us at +1 (234) 567-890"
               >
                 <Phone className="w-8 h-8 text-white mb-2 transition-transform duration-200 ease-in-out group-hover:rotate-6" />
@@ -208,7 +281,7 @@ export default function ContactForm() {
               {/* Email Card */}
               <a
                 href="mailto:your.email@example.com"
-                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-102 hover:shadow-lg group"
+                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg group"
                 aria-label="Email us at your.email@example.com"
               >
                 <Mail className="w-8 h-8 text-white mb-2 transition-transform duration-200 ease-in-out group-hover:scale-110" />
@@ -221,7 +294,7 @@ export default function ContactForm() {
                 href="https://github.com/yourusername"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-102 hover:shadow-lg group"
+                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg group"
                 aria-label="Visit my GitHub profile"
               >
                 <Github className="w-8 h-8 text-white mb-2 transition-transform duration-200 ease-in-out group-hover:-translate-y-0.5" />
@@ -234,7 +307,7 @@ export default function ContactForm() {
                 href="https://linkedin.com/in/yourprofile"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-102 hover:shadow-lg group"
+                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg group"
                 aria-label="Connect with me on LinkedIn"
               >
                 <Linkedin className="w-8 h-8 text-[#0A66C2] mb-2 transition-transform duration-200 ease-in-out group-hover:-translate-y-0.5" />
@@ -244,28 +317,15 @@ export default function ContactForm() {
 
               {/* WhatsApp Card */}
               <a
-                href="https://wa.me/9461004417" // Replace with actual WhatsApp number
+                href="https://wa.me/1234567890" // Replace with actual WhatsApp number
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-102 hover:shadow-lg group"
+                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg group"
                 aria-label="Chat with me on WhatsApp"
               >
                 <MessageCircle className="w-8 h-8 text-[#25D366] mb-2 transition-transform duration-200 ease-in-out group-hover:-translate-y-0.5" />
                 <span className="text-white text-base md:text-lg font-semibold">WhatsApp</span>
                 <span className="text-zinc-400 text-sm">+1 (234) 567-890</span>
-              </a>
-
-              {/* X Card */}
-              <a
-                href="https://wa.me/9461004417" // Replace with actual WhatsApp number
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-102 hover:shadow-lg group"
-                aria-label="Chat with me on WhatsApp"
-              >
-                <Twitter className="w-8 h-8 text-[#0b62e6] mb-2 transition-transform duration-200 ease-in-out group-hover:-translate-y-0.5" />
-                <span className="text-white text-base md:text-lg font-semibold">X</span>
-                <span className="text-zinc-400 text-sm">username</span>
               </a>
             </div>
           </div>
