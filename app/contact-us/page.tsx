@@ -2,13 +2,17 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Github, Linkedin, Mail, Phone, MessageCircle } from "lucide-react"
+import { Github, Linkedin, Mail, Phone, MessageCircle, Mails, Headset, Smartphone, PhoneCall } from "lucide-react"
+import { toast } from "sonner"
+import { FaXTwitter } from "react-icons/fa6";
 
 // React Hook Form and Zod imports
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { IconBrandTwitterFilled, IconBrandWhatsapp } from "@tabler/icons-react"
+import { GitHubLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons"
 
 const services = [
   "WEB DEVELOPMENT",
@@ -19,16 +23,16 @@ const services = [
   "SOCIAL MEDIA",
 ]
 
-const budgetOptions = ["LESS THAN $1,000", "$1,000 - $5,000", "MORE THAN $5,000", "LET'S TALK"]
+const budgetOptions = ["LESS THAN ₹20,000", "₹20,000 - ₹50,000", "MORE THAN ₹50,000", "LET'S TALK"]
 
 const formSchema = z.object({
   firstName: z.string().min(1, { message: "First Name is required." }),
   lastName: z.string().min(1, { message: "Last Name is required." }),
   email: z.string().email({ message: "Invalid email address." }),
-  phoneNumber: z.string().min(10, { message: "Phone Number is required and must be at least 10 digits." }),
+  phoneNo: z.string().min(10, { message: "Phone Number is required and must be at least 10 digits." }),
   message: z.string().min(10, { message: "Message must be at least 10 characters." }),
-  selectedServices: z.array(z.string()).min(1, { message: "Please select at least one service." }),
-  selectedBudget: z.string().min(1, { message: "Please select an estimated expense." }),
+  services: z.array(z.string()).min(1, { message: "Please select at least one service." }),
+  expense: z.string().min(1, { message: "Please select an estimated expense." }),
 })
 
 export default function ContactForm() {
@@ -39,21 +43,43 @@ export default function ContactForm() {
       firstName: "",
       lastName: "",
       email: "",
-      phoneNumber: "",
+      phoneNo: "",
       message: "",
-      selectedServices: [],
-      selectedBudget: "",
+      services: [],
+      expense: "",
     },
   })
 
-  // Watch for changes in selectedServices and selectedBudget to update button states
-  const watchedServices = form.watch("selectedServices")
-  const watchedBudget = form.watch("selectedBudget")
+  // Watch for changes in services and expense to update button states
+  const watchedServices = form.watch("services")
+  const watchedBudget = form.watch("expense")
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log("Form submitted with values:", values)
-    // Here you would typically send the data to your backend
-    alert("Form submitted successfully! Check console for data.")
+
+    try {
+      const response = await fetch("api/contact", {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values)
+      })
+
+      console.log("RESPONSE", response);
+      
+  
+      if (response.ok) {
+        form.reset()
+        toast('Your form is submitted successfully, I will contact to you soon')
+      } else {
+        toast('From submission is failed')
+        console.error("Failed to add contact");
+      }
+    } catch (error) {
+      console.error("Error adding room:", error);
+      toast("An error occurred while Submitting form.");
+    }
+
+
   }
 
   return (
@@ -77,7 +103,7 @@ export default function ContactForm() {
                 {/* Service Selection */}
                 <FormField
                   control={form.control}
-                  name="selectedServices"
+                  name="services"
                   render={({ field }) => (
                     <FormItem className="space-y-4">
                       <FormLabel className="text-base font-medium text-zinc-200">Select Service</FormLabel>
@@ -113,7 +139,7 @@ export default function ContactForm() {
                 {/* Budget Selection */}
                 <FormField
                   control={form.control}
-                  name="selectedBudget"
+                  name="expense"
                   render={({ field }) => (
                     <FormItem className="space-y-4">
                       <FormLabel className="text-base font-medium text-zinc-200">Estimated Expenses</FormLabel>
@@ -210,15 +236,15 @@ export default function ContactForm() {
                 {/* Phone Number Field */}
                 <FormField
                   control={form.control}
-                  name="phoneNumber"
+                  name="phoneNo"
                   render={({ field }) => (
                     <FormItem className="space-y-2">
-                      <FormLabel htmlFor="phoneNumber" className="text-base font-medium text-zinc-200">
+                      <FormLabel htmlFor="phoneNo" className="text-base font-medium text-zinc-200">
                         Phone Number
                       </FormLabel>
                       <FormControl>
                         <Input
-                          id="phoneNumber"
+                          id="phoneNo"
                           type="tel"
                           placeholder="e.g., +1 555 123 4567"
                           className="h-12 bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-400 focus:border-white focus:ring-white"
@@ -270,62 +296,76 @@ export default function ContactForm() {
               {/* Phone Card */}
               <a
                 href="tel:+1234567890"
-                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg group"
+                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-101 hover:shadow-lg group"
                 aria-label="Call us at +1 (234) 567-890"
               >
-                <Phone className="w-8 h-8 text-white mb-2 transition-transform duration-200 ease-in-out group-hover:rotate-6" />
+                <PhoneCall   className="w-8 h-8 text-white mb-2 transition-transform duration-200 ease-in-out group-hover:rotate-6" />
                 <span className="text-white text-base md:text-lg font-semibold">Phone</span>
-                <span className="text-zinc-400 text-sm">+1 (234) 567-890</span>
+                <span className="text-zinc-400 text-sm">+91 9784413782</span>
               </a>
 
               {/* Email Card */}
               <a
-                href="mailto:your.email@example.com"
-                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg group"
+                href="mailto:haarishsheikh04@gmail.com"
+                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-101 hover:shadow-lg group"
                 aria-label="Email us at your.email@example.com"
               >
-                <Mail className="w-8 h-8 text-white mb-2 transition-transform duration-200 ease-in-out group-hover:scale-110" />
+                <Mails className="w-8 h-8 text-white mb-2 transition-transform duration-200 ease-in-out group-hover:scale-110" />
                 <span className="text-white text-base md:text-lg font-semibold">Email</span>
-                <span className="text-zinc-400 text-sm">your.email@example.com</span>
+                <span className="text-zinc-400 text-sm">haarishsheikh04@gmail.com</span>
+              </a>
+              
+              {/* WhatsApp Card */}
+              <a
+                href="https://wa.me/9784413782" // Replace with actual WhatsApp number
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-101 hover:shadow-lg group"
+                aria-label="Chat with me on WhatsApp"
+              >
+                <IconBrandWhatsapp className="w-8 h-8 text-[#25D366] mb-2 transition-transform duration-200 ease-in-out group-hover:-translate-y-0.5" />
+                <span className="text-white text-base md:text-lg font-semibold">WhatsApp</span>
+                <span className="text-zinc-400 text-sm">+91 9784413782</span>
               </a>
 
               {/* GitHub Card */}
               <a
-                href="https://github.com/yourusername"
+                href="https://github.com/ValoraSheikh"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg group"
+                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-101 hover:shadow-lg group"
                 aria-label="Visit my GitHub profile"
               >
-                <Github className="w-8 h-8 text-white mb-2 transition-transform duration-200 ease-in-out group-hover:-translate-y-0.5" />
+                <GitHubLogoIcon className="w-8 h-8 text-white mb-2 transition-transform duration-200 ease-in-out group-hover:-translate-y-0.5" />
                 <span className="text-white text-base md:text-lg font-semibold">GitHub</span>
-                <span className="text-zinc-400 text-sm">yourusername</span>
+                <span className="text-zinc-400 text-sm">ValoraSheikh</span>
               </a>
 
               {/* LinkedIn Card */}
               <a
-                href="https://linkedin.com/in/yourprofile"
+                href="https://www.linkedin.com/in/valorant-aman-238a73335/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg group"
+                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-101 hover:shadow-lg group"
                 aria-label="Connect with me on LinkedIn"
               >
-                <Linkedin className="w-8 h-8 text-[#0A66C2] mb-2 transition-transform duration-200 ease-in-out group-hover:-translate-y-0.5" />
+                <LinkedInLogoIcon className="w-8 h-8 text-[#0A66C2] mb-2 transition-transform duration-200 ease-in-out group-hover:-translate-y-0.5" />
                 <span className="text-white text-base md:text-lg font-semibold">LinkedIn</span>
-                <span className="text-zinc-400 text-sm">yourprofile</span>
+                <span className="text-zinc-400 text-sm">Valorant Aman</span>
               </a>
 
-              {/* WhatsApp Card */}
+
+              {/* X Card */}
               <a
-                href="https://wa.me/1234567890" // Replace with actual WhatsApp number
+                href="https://x.com/AmanSheikhKhan" // Replace with actual WhatsApp number
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg group"
+                className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-101 hover:shadow-lg group"
                 aria-label="Chat with me on WhatsApp"
               >
-                <MessageCircle className="w-8 h-8 text-[#25D366] mb-2 transition-transform duration-200 ease-in-out group-hover:-translate-y-0.5" />
-                <span className="text-white text-base md:text-lg font-semibold">WhatsApp</span>
-                <span className="text-zinc-400 text-sm">+1 (234) 567-890</span>
+                <FaXTwitter className="w-8 h-8 text-[#ffffff] mb-2 transition-transform duration-200 ease-in-out group-hover:-translate-y-0.5" />
+                <span className="text-white text-base md:text-lg font-semibold">X</span>
+                <span className="text-zinc-400 text-sm">@AmanSheikhKhan</span>
               </a>
             </div>
           </div>
