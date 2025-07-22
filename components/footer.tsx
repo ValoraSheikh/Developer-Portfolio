@@ -1,7 +1,7 @@
 import Link from "next/link"
-import { Github, Linkedin, X, Mail, Phone, MessageCircle, Mails, PhoneCall } from "lucide-react"
+import { Mails, PhoneCall } from "lucide-react"
 import { GitHubLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons"
-import { FaSquareXTwitter, FaXTwitter } from "react-icons/fa6"
+import { FaSquareXTwitter } from "react-icons/fa6"
 import { IconBrandWhatsappFilled } from "@tabler/icons-react"
 
 export function Footer() {
