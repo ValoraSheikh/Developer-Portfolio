@@ -14,7 +14,7 @@ import { useState } from "react";
 import { Hero } from "./hero-section";
 import { About } from "./about";
 import { Projects } from "./projects";
-import { Bento } from "./bento";
+// import { Bento } from "./bento";
 import { TechStack } from "./tech-stack";
 import { Testimonial } from "./testimonial";
 import { Map } from "./map";
@@ -25,10 +25,6 @@ export function Header() {
   const redirect = useRouter();
 
   const navItems = [
-    // {
-    //   name: "Features",
-    //   link: "#features",
-    // },
     {
       name: "Blogs",
       link: "/blogs",
@@ -104,7 +100,7 @@ export function Header() {
       <Hero />
       <About />
       <Projects />
-      <Bento />
+      {/* <Bento /> */}
       <TechStack />
       <Testimonial />
       <Map />

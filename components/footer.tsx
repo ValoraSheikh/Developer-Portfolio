@@ -26,15 +26,16 @@ export function Footer() {
               </Link>
             </li>
             <li>
+              <Link href="/blogs" className="hover:text-white hover:underline">
+                Blogs
+              </Link>
+            </li>
+            <li>
               <Link href="/contact-us" className="hover:text-white hover:underline">
                 Contact
               </Link>
             </li>
-            <li>
-              <Link href="/blogs" className="hover:text-white hover:underline">
-                Blog
-              </Link>
-            </li>
+            
           </ul>
         </nav>
 

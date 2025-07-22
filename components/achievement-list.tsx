@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { AnimatedList } from "@/components/magicui/animated-list";
 import { useInView } from "motion/react";
 import { useRef } from "react";
-import {motion} from "motion/react";
+import { motion } from "motion/react";
 
 interface Item {
   name: string;
@@ -16,41 +16,91 @@ interface Item {
 
 let notifications = [
   {
-    name: "Portfolio V3 Deployed",
-    description: "Live on Vercel",
-    time: "2h ago",
-    icon: "🚀",
-    color: "#4ADE80", // green-400
+    name: "Mastered MongoDB Relationships",
+    description: "One-to-many, many-to-many—unlocked",
+    time: "2d ago",
+    icon: "🧠",
+    color: "#6366F1", // indigo-500 (brain = thoughtful, deep tech)
   },
   {
-    name: "100+ GitHub Stars",
-    description: "on open-source repo",
-    time: "1d ago",
-    icon: "⭐",
-    color: "#FACC15", // yellow-400
+    name: "Learned Zod Validation",
+    description: "Strict but kind",
+    time: "4d ago",
+    icon: "📏",
+    color: "#0EA5E9", // sky-500 (clean, structured)
   },
   {
-    name: "Blog Published",
-    description: "Advanced Framer Motion Guide",
-    time: "3d ago",
-    icon: "✍️",
-    color: "#60A5FA", // blue-400
-  },
-  {
-    name: "Contributed to OSS",
-    description: "PR merged in shadcn/ui",
-    time: "5d ago",
-    icon: "🤝",
-    color: "#F472B6", // pink-400
-  },
-  {
-    name: "Completed TypeScript Course",
-    description: "Frontend Masters - TS Fundamentals",
+    name: "Studied Server Components",
+    description: "Next.js black magic",
     time: "1w ago",
-    icon: "📘",
-    color: "#38BDF8", // sky-400
+    icon: "🧙‍♂️",
+    color: "#8B5CF6", // violet-500 (wizard = mystical purple vibes)
+  },
+  {
+    name: "Image Upload Done",
+    description: "UploadThing integrated",
+    time: "1h ago",
+    icon: "📤",
+    color: "#3B82F6", // blue-500 (upload, clarity, cloud vibes)
+  },
+  {
+    name: "Added Admin Dashboard",
+    description: "Built with Zustand + Tailwind",
+    time: "3d ago",
+    icon: "🛠️",
+    color: "#F97316", // orange-500 (builder energy)
+  },
+  {
+    name: "Integrated Payment System",
+    description: "Stripe FTW",
+    time: "5h ago",
+    icon: "💸",
+    color: "#22C55E", // green-500 (money = green, naturally)
+  },
+  {
+    name: "Hotel App Shipped",
+    description: "Fullstack Next.js + MongoDB",
+    time: "6h ago",
+    icon: "🏨",
+    color: "#0F766E", // teal-700 (premium, classic, hotel-like)
+  },
+  {
+    name: "New Project Live",
+    description: "Deployed on Vercel",
+    time: "1d ago",
+    icon: "🚀",
+    color: "#4ADE80", // green-400 (feels fresh, alive)
+  },
+  {
+    name: "Portfolio Updated",
+    description: "v3 now sleeker & faster",
+    time: "3h ago",
+    icon: "🎯",
+    color: "#EAB308", // yellow-500 (target = focus, energy)
+  },
+  {
+    name: "GitHub Repo Trending",
+    description: "200+ stars on open source",
+    time: "2d ago",
+    icon: "📈",
+    color: "#F59E0B", // amber-500 (growth, upward momentum)
+  },
+  {
+    name: "PR Merged!",
+    description: "Contributed to Aceternity UI",
+    time: "4d ago",
+    icon: "🎉",
+    color: "#EC4899", // pink-500 (celebration)
+  },
+  {
+    name: "Wrote a Case Study",
+    description: "Lessons from real-world dev",
+    time: "6d ago",
+    icon: "📝",
+    color: "#10B981", // emerald-500 (writing, thoughtful green)
   },
 ];
+
 
 notifications = Array.from({ length: 100 }, () => notifications).flat();
 
