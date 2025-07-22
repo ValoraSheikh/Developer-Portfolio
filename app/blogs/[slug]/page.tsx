@@ -56,8 +56,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-type Props = {
-  params: { slug: string };
+interface Props {
+  params: Promise<{ slug: string }>;
 };
 
 interface BlogPostData {
