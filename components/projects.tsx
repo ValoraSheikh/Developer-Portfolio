@@ -8,7 +8,7 @@ export function Projects() {
       title: "2025",
       content: (
         <div>
-          <a href="https://www.stationerywala.shop/" target="_blank" rel="noopener noreferrer">
+          <a href="https://hotel-booking-app-woad.vercel.app/" target="_blank" rel="noopener noreferrer">
           <h1 className="font-sans font-bold text-lg">
             🏨 Built and launched Hotel Booking App with Admin Dashboard
           </h1>
@@ -99,7 +99,7 @@ export function Projects() {
       title: "Late 2024",
       content: (
         <div>
-          <a href="https://hotel-booking-app-woad.vercel.app/" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.stationerywala.shop/" target="_blank" rel="noopener noreferrer">
           <h1 className="font-sans font-bold text-lg">
             🛒 StationeryWala – Project Write-up (Client-Ready Language)
           </h1>
