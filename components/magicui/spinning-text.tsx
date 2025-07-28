@@ -1,6 +1,5 @@
-"use client";
 import { cn } from "@/lib/utils";
-import { motion, Transition, Variants } from "motion/react";
+import { motion, Transition, Variants, Easing } from "motion/react";
 import React, { CSSProperties } from "react";
 
 type SpinningTextProps = {
@@ -18,9 +17,9 @@ type SpinningTextProps = {
   };
 };
 
-const BASE_TRANSITION = {
+const BASE_TRANSITION: Transition = {
   repeat: Infinity,
-  ease: "linear",
+  ease: "linear" as Easing,
 };
 
 const BASE_ITEM_VARIANTS = {
@@ -47,7 +46,6 @@ export function SpinningText({
   }
 
   if (Array.isArray(children)) {
-    // Validate all elements are strings
     if (!children.every((child) => typeof child === "string")) {
       throw new Error("all elements in children array must be strings");
     }
@@ -57,10 +55,10 @@ export function SpinningText({
   const letters = children.split("");
   letters.push(" ");
 
-  const finalTransition = {
+  const finalTransition: Transition = {
     ...BASE_TRANSITION,
     ...transition,
-    duration: (transition as { duration?: number })?.duration ?? duration,
+    duration: transition?.duration ?? duration,
   };
 
   const containerVariants = {
