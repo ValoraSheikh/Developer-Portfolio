@@ -382,7 +382,7 @@ export default function ContactForm() {
 
               {/* WhatsApp Card */}
               <a
-                href="https://wa.me/9784413782" // Replace with actual WhatsApp number
+                href="https://wa.me/+919784413782" // Replace with actual WhatsApp number
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-101 hover:shadow-lg group"

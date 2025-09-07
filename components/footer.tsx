@@ -94,7 +94,7 @@ export function Footer() {
             </li>
             <li>
               <a
-                href="https://wa.me/9784413782"
+                href="https://wa.me/+919784413782"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 hover:text-white hover:underline"
