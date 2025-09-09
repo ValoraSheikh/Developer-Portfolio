@@ -354,9 +354,9 @@ export default function ContactForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Phone Card */}
               <a
-                href="tel:+1234567890"
+                href="tel:+919784413782"
                 className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-101 hover:shadow-lg group"
-                aria-label="Call us at +1 (234) 567-890"
+                aria-label="Call us at +91 9784413782"
               >
                 <IoCall className="w-8 h-8 text-white mb-2 transition-transform duration-200 ease-in-out group-hover:rotate-6" />
                 <span className="text-white text-base md:text-lg font-semibold">
@@ -382,7 +382,7 @@ export default function ContactForm() {
 
               {/* WhatsApp Card */}
               <a
-                href="https://wa.me/+919784413782" // Replace with actual WhatsApp number
+                href="https://wa.me/+919784413782"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center justify-center bg-zinc-900 rounded-xl shadow-md p-4 sm:p-6 border-l-4 border-zinc-700 transition-all duration-300 ease-in-out hover:scale-101 hover:shadow-lg group"
